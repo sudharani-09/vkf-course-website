@@ -1,0 +1,189 @@
+================================================================================
+  ADMIN PANEL GUIDE — Vaibhav Kulkarni Films Website
+  (Beginner-friendly step-by-step instructions)
+================================================================================
+
+This guide is for the website owner. You do NOT need to open Supabase or
+touch any code. Everything is managed from a simple admin page in your browser.
+
+
+--------------------------------------------------------------------------------
+STEP 1: OPEN THE ADMIN PANEL
+--------------------------------------------------------------------------------
+
+1. Open your web browser (Chrome, Safari, Edge, etc.)
+2. Go to your website address + /admin
+
+   Example:
+     https://your-website.com/admin
+
+3. Enter the password your developer gave you
+4. Click "Sign In"
+
+You will see a dashboard with a menu on the left side.
+
+
+--------------------------------------------------------------------------------
+STEP 2: WHAT EACH MENU ITEM DOES
+--------------------------------------------------------------------------------
+
+Overview        — Quick summary: how many enquiries and enrollments you have
+
+Batch Date      — Change the batch name and start date (shows on homepage)
+
+Enquiries       — Read messages from the Contact form. Delete spam if needed.
+
+Enrollments     — See who filled the enrollment form. Download as Excel (CSV).
+
+Site Settings   — Change WhatsApp number, phone, email, hero text, mentor bio
+
+Media & Videos  — Upload hero video, mentor photo, course video, thumbnails
+
+Pricing         — Edit the 3 pricing plans (names, prices, features)
+
+FAQ             — Add, edit, or delete frequently asked questions
+
+Curriculum      — Edit the 10 course modules and bullet points
+
+Page Content    — Edit batch info cards, "Why Join" section, mentor badges, stats
+
+Gallery         — Manage Instagram reel cards, student photos, review screenshots
+
+
+--------------------------------------------------------------------------------
+STEP 3: CHANGE THE BATCH DATE (MOST COMMON TASK)
+--------------------------------------------------------------------------------
+
+1. Click "Batch Date" in the left menu
+2. Edit "Batch Name" (e.g. Batch 18)
+3. Edit "Batch Date" in format YYYY-MM-DD (e.g. 2026-09-15)
+4. Click "Save Batch Date"
+5. Open your homepage — the new date appears automatically
+
+
+--------------------------------------------------------------------------------
+STEP 4: VIEW ENROLLMENTS & DOWNLOAD EXCEL FILE
+--------------------------------------------------------------------------------
+
+1. Click "Enrollments" in the left menu
+2. You will see a table: Name, Phone, Email, Plan, Amount, Date
+3. To download all enrollments as Excel:
+   - Click "Download CSV"
+   - Open the downloaded file in Microsoft Excel or Google Sheets
+
+To delete a record: click the red trash icon next to that row.
+
+
+--------------------------------------------------------------------------------
+STEP 5: CHANGE WHATSAPP NUMBER
+--------------------------------------------------------------------------------
+
+1. Click "Site Settings"
+2. Find "WhatsApp Number"
+3. Enter number WITH country code, NO plus sign
+   Example: 919623252626
+4. Click "Save Settings"
+
+This updates WhatsApp buttons across the entire website.
+
+
+--------------------------------------------------------------------------------
+STEP 6: UPLOAD NEW PHOTOS OR VIDEOS
+--------------------------------------------------------------------------------
+
+1. Click "Media & Videos" (for hero video, mentor photo, course video)
+   OR click "Gallery & Reviews" (for student photos, review screenshots)
+
+2. Click "Upload New File"
+3. Choose the image or video from your computer
+4. Wait for upload to finish
+5. Click "Save" or "Save Media URLs"
+
+Tips:
+  - Images: JPG or PNG, under 5 MB is best
+  - Videos: MP4 format. Hero video can be large — use good WiFi
+  - After upload, refresh your homepage to see changes
+
+
+--------------------------------------------------------------------------------
+STEP 7: EDIT PRICING
+--------------------------------------------------------------------------------
+
+1. Click "Pricing"
+2. Each plan has: Label, Price, Description, Features
+3. For features: one feature per line
+4. Click "Save Plan" on each card you changed
+5. Check the homepage Pricing section to confirm
+
+
+--------------------------------------------------------------------------------
+STEP 8: EDIT FAQ
+--------------------------------------------------------------------------------
+
+1. Click "FAQ"
+2. Edit any question or answer
+3. Click "Save"
+4. To add new FAQ: click "Add FAQ", fill in, click "Create"
+5. To delete: click red "Delete" button
+
+
+--------------------------------------------------------------------------------
+STEP 9: LOG OUT
+--------------------------------------------------------------------------------
+
+Click "Log Out" at the bottom of the left menu when you are done.
+
+
+--------------------------------------------------------------------------------
+FIRST-TIME SETUP (Developer does this once)
+--------------------------------------------------------------------------------
+
+Before the admin panel works, your developer must:
+
+1. Create a Supabase project at https://supabase.com
+2. Run the file `supabase-full-schema.sql` in Supabase → SQL Editor
+3. Copy Supabase URL and service role key to `.env.local`
+4. Set ADMIN_PASSWORD in `.env.local`
+5. Run: npm install && npm run dev
+6. Open http://localhost:3000/admin and test login
+
+For live website (Vercel):
+  - Add the same 3 variables in Vercel → Settings → Environment Variables:
+    NEXT_PUBLIC_SUPABASE_URL
+    SUPABASE_SERVICE_ROLE_KEY
+    ADMIN_PASSWORD
+
+
+--------------------------------------------------------------------------------
+TROUBLESHOOTING
+--------------------------------------------------------------------------------
+
+Problem: "Wrong password"
+Fix:     Ask your developer for the correct ADMIN_PASSWORD
+
+Problem: Batch date shows dashes (—) on homepage
+Fix:     Go to Admin → Batch Date → make sure batch is saved with a valid date
+
+Problem: Upload fails
+Fix:     Check internet connection. Try a smaller file. Make sure Supabase
+         storage bucket "site-assets" exists (developer runs SQL file)
+
+Problem: Changes not showing on website
+Fix:     Hard refresh the page: Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac)
+
+Problem: Enrollments not saving
+Fix:     Developer checks Supabase enrollments table exists and keys are set
+
+
+--------------------------------------------------------------------------------
+QUICK REFERENCE
+--------------------------------------------------------------------------------
+
+Admin URL:     yoursite.com/admin
+Password:      Set by developer in ADMIN_PASSWORD
+Support:       Contact your website developer
+
+
+================================================================================
+  That's it! You can manage your entire website without opening Supabase.
+================================================================================

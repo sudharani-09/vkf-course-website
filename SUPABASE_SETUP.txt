@@ -1,0 +1,173 @@
+================================================================================
+  SUPABASE SETUP GUIDE — Vaibhav Kulkarni Films Website
+  (Beginner-friendly step-by-step instructions)
+================================================================================
+
+This guide explains how to connect Supabase to your website so that:
+  1. Contact form enquiries are saved
+  2. Enrollment details are saved when someone fills the form
+  3. Batch dates show automatically on the homepage
+
+You can do this later — the website will still work without Supabase,
+but batch dates won't appear and form submissions won't be saved to a database.
+
+
+--------------------------------------------------------------------------------
+STEP 1: CREATE A SUPABASE ACCOUNT & PROJECT
+--------------------------------------------------------------------------------
+
+1. Go to https://supabase.com and sign up (free tier is fine).
+2. Click "New Project".
+3. Choose a name (e.g. "vkf-films"), set a database password, pick a region
+   close to India (e.g. Mumbai or Singapore).
+4. Wait 1–2 minutes for the project to finish setting up.
+
+
+--------------------------------------------------------------------------------
+STEP 2: GET YOUR API KEYS
+--------------------------------------------------------------------------------
+
+1. In your Supabase project, go to: Settings → API
+2. Copy these two values:
+   - Project URL  →  this becomes NEXT_PUBLIC_SUPABASE_URL
+   - service_role key (under "Project API keys")  →  SUPABASE_SERVICE_ROLE_KEY
+
+   ⚠️  Keep the service_role key SECRET. Never put it in client-side code
+       or commit it to GitHub. Only use it in .env.local on your server.
+
+
+--------------------------------------------------------------------------------
+STEP 3: ADD KEYS TO YOUR WEBSITE
+--------------------------------------------------------------------------------
+
+1. In your project folder, copy the example env file:
+     cp .env.local.example .env.local
+
+2. Open .env.local and paste your keys:
+
+     
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY_HERE
+3. Save the file. Restart your dev server (npm run dev) if it's running.
+
+
+--------------------------------------------------------------------------------
+STEP 4: CREATE THE DATABASE TABLES
+--------------------------------------------------------------------------------
+
+In Supabase, go to: SQL Editor → New Query
+Paste and run EACH block below one at a time.
+
+
+--- TABLE 1: enquiries (for Contact form) ---
+
+CREATE TABLE enquiries (
+  id          bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name        text NOT NULL,
+  phone       text NOT NULL,
+  email       text NOT NULL,
+  message     text NOT NULL,
+  created_at  timestamptz DEFAULT now()
+);
+
+
+--- TABLE 2: enrollments (for Enroll / Reserve Seat form) ---
+
+CREATE TABLE enrollments (
+  id                bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name              text NOT NULL,
+  phone             text NOT NULL,
+  email             text NOT NULL,
+  address           text NOT NULL,
+  experience_level  text NOT NULL,
+  selected_plan     text NOT NULL,
+  amount            text,
+  payment_status    text DEFAULT 'pending_whatsapp',
+  payment_id        text,
+  created_at        timestamptz DEFAULT now()
+);
+
+
+--- TABLE 3: batch_info (for Batch Date announcement on homepage) ---
+
+CREATE TABLE batch_info (
+  id          bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  batch_name  text NOT NULL,
+  batch_date  date NOT NULL,
+  is_active   boolean DEFAULT true
+);
+
+
+--- INSERT SAMPLE BATCH DATA ---
+
+INSERT INTO batch_info (batch_name, batch_date, is_active)
+VALUES ('Batch 17', '2026-08-30', true);
+
+
+--------------------------------------------------------------------------------
+STEP 5: ENABLE ROW LEVEL SECURITY (OPTIONAL BUT RECOMMENDED)
+--------------------------------------------------------------------------------
+
+Since the website uses the service_role key on the server (API routes only),
+RLS is not strictly required for basic operation. But for safety, run:
+
+ALTER TABLE enquiries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE enrollments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE batch_info ENABLE ROW LEVEL SECURITY;
+
+The service_role key bypasses RLS, so your API routes will still work.
+
+
+--------------------------------------------------------------------------------
+STEP 6: HOW TO UPDATE THE BATCH DATE LATER
+--------------------------------------------------------------------------------
+
+When you want to change the batch date (no code changes needed):
+
+1. Go to Supabase → Table Editor → batch_info
+2. Find the active row (is_active = true)
+3. Edit batch_date (format: YYYY-MM-DD, e.g. 2026-09-15)
+4. Save — the website will show the new date automatically
+
+To switch to a new batch:
+  - Set the old batch is_active = false
+  - Insert a new row with is_active = true
+
+
+--------------------------------------------------------------------------------
+STEP 7: VIEW SUBMISSIONS
+--------------------------------------------------------------------------------
+
+- Contact enquiries:  Supabase → Table Editor → enquiries
+- Enrollments:        Supabase → Table Editor → enrollments
+
+
+--------------------------------------------------------------------------------
+TROUBLESHOOTING
+--------------------------------------------------------------------------------
+
+Problem: Batch date shows "—" dashes instead of numbers
+Fix:     Check that batch_info has a row with is_active = true
+         and batch_date is a valid date.
+
+Problem: Contact form says "Something went wrong"
+Fix:     Verify .env.local keys are correct and enquiries table exists.
+
+Problem: Enrollment not saving
+Fix:     Verify enrollments table exists and keys are in .env.local.
+
+Problem: Website works locally but not after deploy
+Fix:     Add the same env variables in your hosting platform
+         (Vercel → Project Settings → Environment Variables).
+
+
+--------------------------------------------------------------------------------
+QUICK REFERENCE — ENV VARIABLES NEEDED
+--------------------------------------------------------------------------------
+
+NEXT_PUBLIC_SUPABASE_URL       = Your Supabase project URL
+SUPABASE_SERVICE_ROLE_KEY      = Your service_role secret key (server only)
+
+
+================================================================================
+  That's it! Once Supabase is set up, everything updates automatically.
+================================================================================

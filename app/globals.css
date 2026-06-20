@@ -1,0 +1,198 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Variables ─────────────────────────────────── */
+:root {
+  --deep-black: #0E0E0E;
+  --charcoal: #333233;
+  --warm-gray: #575553;
+  --taupe: #8A857F;
+  --silver: #C7C7C7;
+  --pure-white: #FDFDFD;
+  --border: rgba(253, 253, 253, 0.08);
+  --border-hover: rgba(253, 253, 253, 0.18);
+  --glass: rgba(253, 253, 253, 0.04);
+  --glass-strong: rgba(14, 14, 14, 0.75);
+}
+
+/* ─── Reset ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: 96px; }
+
+section[id] { scroll-margin-top: 96px; }
+
+body {
+  background: var(--deep-black);
+  color: var(--pure-white);
+  font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+/* ─── Typography ─────────────────────────────────────── */
+.font-display { font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif; }
+
+/* ─── Scrollbar ─────────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--deep-black); }
+::-webkit-scrollbar-thumb { background: var(--charcoal); border-radius: 2px; }
+
+/* ─── Glass morphism ─────────────────────────────────── */
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border);
+}
+.glass-dark {
+  background: var(--glass-strong);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid var(--border);
+}
+
+/* ─── Section spacing ────────────────────────────────── */
+.section-gap { padding-top: 100px; padding-bottom: 100px; }
+@media (max-width: 768px) { .section-gap { padding-top: 72px; padding-bottom: 72px; } }
+
+/* ─── Label style ─────────────────────────────────────── */
+.label-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--taupe);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 100px;
+}
+
+/* ─── Marquee infinite scroll ────────────────────────── */
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+@keyframes stats-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-left { animation: marquee-left 35s linear infinite; }
+.marquee-right { animation: marquee-right 38s linear infinite; }
+.stats-marquee { animation: stats-marquee 24s linear infinite; }
+.marquee-left:hover, .marquee-right:hover, .stats-marquee:hover { animation-play-state: paused; }
+
+@media (max-width: 768px) {
+  .marquee-left { animation-duration: 42s; }
+  .marquee-right { animation-duration: 45s; }
+  .stats-marquee { animation-duration: 20s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-left, .marquee-right, .stats-marquee,
+  .float-a, .float-b, .float-c, .float-d {
+    animation: none !important;
+  }
+}
+
+/* ─── Form fields ────────────────────────────────────── */
+.input-field {
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid rgba(253, 253, 253, 0.1);
+  border-radius: 0.75rem;
+  padding: 0.875rem 1rem;
+  font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
+  font-size: 0.875rem;
+  color: var(--pure-white);
+  caret-color: var(--pure-white);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.input-field::placeholder { color: rgba(253, 253, 253, 0.3); }
+.input-field:focus { border-color: rgba(253, 253, 253, 0.25); }
+.input-field:-webkit-autofill,
+.input-field:-webkit-autofill:hover,
+.input-field:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--pure-white);
+  -webkit-box-shadow: 0 0 0 1000px #1a1a1a inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+.input-field-error { border-color: rgba(239, 68, 68, 0.5) !important; }
+
+/* ─── Video BG ────────────────────────────────────────── */
+.video-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(14,14,14,0.55) 0%,
+    rgba(14,14,14,0.3) 40%,
+    rgba(14,14,14,0.5) 70%,
+    rgba(14,14,14,1) 100%
+  );
+}
+.vignette {
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(14,14,14,0.8) 100%);
+}
+
+/* ─── Horizontal scroll snap ─────────────────────────── */
+.h-scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  gap: 20px;
+  padding: 0 5vw;
+}
+.h-scroll::-webkit-scrollbar { display: none; }
+.h-scroll > * { scroll-snap-align: center; flex-shrink: 0; }
+
+/* ─── Grain overlay ──────────────────────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: overlay;
+}
+
+/* ─── Line animation ─────────────────────────────────── */
+@keyframes line-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.line-animate { transform-origin: left; animation: line-grow 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+/* ─── Float animations for testimonial cards ─────────── */
+@keyframes float-up { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes float-down { 0%,100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+@keyframes tilt-left { 0%,100% { transform: rotate(-1deg); } 50% { transform: rotate(0.5deg); } }
+@keyframes tilt-right { 0%,100% { transform: rotate(1deg); } 50% { transform: rotate(-0.5deg); } }
+.float-a { animation: float-up 5s ease-in-out infinite; }
+.float-b { animation: float-down 5.5s ease-in-out infinite 0.5s; }
+.float-c { animation: tilt-left 6s ease-in-out infinite 1s; }
+.float-d { animation: tilt-right 5.8s ease-in-out infinite 0.3s; }
+
+/* ─── Pulse animation for play buttons ───────────────── */
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid rgba(253,253,253,0.4);
+  animation: pulse-ring 2s ease-out infinite;
+}
