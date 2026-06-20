@@ -35,7 +35,7 @@ function VideoCard({ reel, idx, hoveredIdx, onHover, onLeave }: {
       }}
       onHoverStart={onHover}
       onHoverEnd={onLeave}
-      className="relative flex-shrink-0 w-[220px] md:w-full rounded-3xl overflow-hidden cursor-pointer"
+      className="relative flex-shrink-0 w-[75vw] max-w-[260px] md:w-full rounded-3xl overflow-hidden cursor-pointer"
       style={{
         aspectRatio: "9/16",
         background: "#1a1a1a",
@@ -156,12 +156,19 @@ export default function VideoTestimonials() {
 
         {/* Mobile — slider */}
         <div className="sm:hidden">
-          <div ref={scrollRef}
-            className="flex gap-5 overflow-x-auto py-4"
-            style={{ scrollSnapType: "x mandatory", scrollbarWidth: "none" }}
-          >
+          <div
+  ref={scrollRef}
+  className="flex overflow-x-auto py-4"
+  style={{
+    scrollSnapType: "x mandatory",
+    scrollbarWidth: "none",
+  }}
+>
             {REELS.map((r, i) => (
-              <div key={i} className="reel-card snap-center">
+              <div
+                 key={i}
+                    className="reel-card snap-center flex justify-center min-w-full"
+                >
                 <VideoCard reel={r} idx={i} hoveredIdx={hoveredIdx}
                   onHover={() => setHoveredIdx(i)} onLeave={() => setHoveredIdx(null)} />
               </div>
