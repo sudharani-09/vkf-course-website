@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const NAV_LINKS = [
-  { label: "Student Work", href: "#student-work" },
-  { label: "Reviews", href: "#testimonials" },
+  { label: "Student Work", href: "#video-testimonials" },
+  { label: "Reviews", href: "#reviews" },
   { label: "Mentor", href: "#mentor" },
   { label: "Course", href: "#curriculum" },
   { label: "Contact", href: "#contact" },
@@ -82,15 +82,47 @@ export default function Navbar() {
             >
               <div className="px-6 py-5 flex flex-col gap-5">
                 {NAV_LINKS.map((l) => (
-                  <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}
-                    className="font-inter text-sm text-silver/70 hover:text-pure-white transition-colors">
-                    {l.label}
-                  </a>
-                ))}
-                <a href="#enroll" onClick={() => setMenuOpen(false)}
-                  className="inline-flex justify-center font-inter text-sm font-medium bg-pure-white text-deep-black px-5 py-3 rounded-xl mt-2">
+                          <a
+                            key={l.href}
+                            href={l.href}
+                            onClick={(e) => {
+                              e.preventDefault();
+
+                              const target = document.querySelector(l.href);
+
+                              setMenuOpen(false);
+
+                              setTimeout(() => {
+                                target?.scrollIntoView({
+                                  behavior: "smooth",
+                                  block: "start",
+                                });
+                              }, 300);
+                            }}
+                            className="font-inter text-sm text-silver/70 hover:text-pure-white transition-colors"
+                          >
+                            {l.label}
+                          </a>
+                        ))}
+                <a
+                  href="#enroll"
+                  onClick={(e) => {
+                    e.preventDefault();
+
+                    const target = document.querySelector("#enroll");
+
+                    setMenuOpen(false);
+
+                    setTimeout(() => {
+                      target?.scrollIntoView({
+                        behavior: "smooth",
+                      });
+                    }, 300);
+                  }}
+                  className="inline-flex justify-center font-inter text-sm font-medium bg-pure-white text-deep-black px-5 py-3 rounded-xl mt-2"
+                >
                   Reserve Seat
-                </a>
+</a>
               </div>
             </motion.div>
           )}
