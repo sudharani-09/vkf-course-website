@@ -282,7 +282,9 @@ export default function AdminPanel() {
     window.location.reload();
   };
 
-const activeBatch = batches[0];  return (
+const activeBatch =
+  batches.find((b: any) => b.is_active === true) ||
+  batches[0];  return (
     <div className="min-h-screen flex">
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-zinc-200 p-4 flex flex-col fixed h-full z-10">

@@ -6,3 +6,5 @@ node_modules
 tsconfig.tsbuildinfo
 public/student-video-1.mp4
 public/student-video-2.mp4
+public/course-detail-video.mp4
+public/hero-video.mp4
