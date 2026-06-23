@@ -7,6 +7,7 @@ const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function Hero() {
   const { settings } = useCms();
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const [introDone, setIntroDone] = useState(false);
 
@@ -15,10 +16,6 @@ export default function Hero() {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    if (!introDone || !videoRef.current) return;
-    videoRef.current.play().catch(() => {});
-  }, [introDone]);
 
   return (
     <section id="home" className="relative w-full h-screen min-h-[600px] overflow-hidden bg-deep-black">
@@ -32,10 +29,11 @@ export default function Hero() {
        
         <video
           ref={videoRef}
+          autoPlay
           muted
           loop
           playsInline
-          preload="none"
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src={settings.hero_video_url} type="video/mp4" />
