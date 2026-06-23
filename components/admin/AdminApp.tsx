@@ -114,20 +114,36 @@ function UploadField({
   onUploaded: (url: string) => void;
 }) {
   const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState("");
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
+    setProgress("Getting upload URL…");
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      fd.append("folder", folder);
-      const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      onUploaded(data.url);
+      // Step 1: get signed upload URL from server (tiny request, no file data)
+      const urlRes = await fetch("/api/admin/upload-url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ folder, filename: file.name, contentType: file.type }),
+      });
+      const urlData = await urlRes.json();
+      if (!urlRes.ok) throw new Error(urlData.error || "Failed to get upload URL");
+
+      // Step 2: upload file directly to Supabase Storage (bypasses Vercel completely)
+      setProgress("Uploading…");
+      const uploadRes = await fetch(urlData.signedUrl, {
+        method: "PUT",
+        headers: { "Content-Type": file.type },
+        body: file,
+      });
+      if (!uploadRes.ok) throw new Error("Upload to storage failed");
+
+      onUploaded(urlData.publicUrl);
+      setProgress("");
     } catch (err: unknown) {
+      setProgress("");
       alert(err instanceof Error ? err.message : "Upload failed");
     } finally {
       setUploading(false);
@@ -146,7 +162,7 @@ function UploadField({
       )}
       <label className="admin-btn admin-btn-secondary cursor-pointer inline-flex">
         {uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
-        {uploading ? "Uploading…" : "Upload New File"}
+        {uploading ? (progress || "Uploading…") : "Upload New File"}
         <input type="file" accept={accept} className="hidden" onChange={handleUpload} disabled={uploading} />
       </label>
     </div>
