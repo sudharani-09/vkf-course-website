@@ -4,19 +4,18 @@ import { getSupabase } from "@/lib/supabase";
 export async function GET() {
   try {
     const { data, error } = await getSupabase()
-  .from("batch_info")
-  .select("*")
-  .limit(1)
-  .maybeSingle();
+      .from("batch_info")
+      .select("*")
+      .eq("is_active", true)
+      .order("batch_date", { ascending: true })
+      .limit(1)
+      .maybeSingle();
 
-console.log("BATCH DATA:", data);
-console.log("BATCH ERROR:", error);
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
-if (error) {
-  return NextResponse.json({ error: error.message });
-}
-
-return NextResponse.json({ batch: data });
+    return NextResponse.json({ batch: data });
   } catch {
     return NextResponse.json({ batch: null });
   }

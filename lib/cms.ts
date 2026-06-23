@@ -98,6 +98,7 @@ export type SiteSettings = {
   mentor_bio_1: string;
   mentor_bio_2: string;
   hero_video_url: string;
+  hero_poster_url: string;
   mentor_image_url: string;
   course_video_url: string;
   course_thumb_url: string;
@@ -134,6 +135,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   mentor_bio_2:
     "His philosophy: the best way to learn filmmaking is to do it with real footage, honest feedback, and a mentor who has solved every problem you'll face in the field.",
   hero_video_url: "/hero-video.mp4",
+  hero_poster_url: "",
   mentor_image_url: "/mentor.jpg",
   course_video_url: "/course-detail-video.mp4",
   course_thumb_url: "/course-detail-thumb.png",
@@ -373,7 +375,7 @@ export async function getCmsData(): Promise<CmsData> {
       instagramReels: reelsRes.data?.length ? reelsRes.data : DEFAULT_INSTAGRAM_REELS,
       studentGallery: galleryRes.data?.length ? galleryRes.data : DEFAULT_STUDENT_GALLERY,
       reviewImages: reviewsRes.data?.length ? reviewsRes.data : DEFAULT_REVIEW_IMAGES,
-      batch: batchRes.data ?? DEFAULT_CMS.batch,
+      batch: batchRes.data ?? null,
     };
   } catch {
     return DEFAULT_CMS;

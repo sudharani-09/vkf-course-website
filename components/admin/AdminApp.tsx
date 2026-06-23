@@ -470,12 +470,15 @@ const activeBatch =
         {tab === "media" && (
           <div>
             <h2 className="text-2xl font-semibold mb-2">Media & Videos</h2>
-            <p className="text-sm text-zinc-500 mb-6">Upload new files — the URL updates automatically on your website.</p>
+            <p className="text-sm text-zinc-500 mb-6">Upload images here. For videos, upload directly via Supabase Storage dashboard and paste the public URL below.</p>
             <div className="admin-card p-6 max-w-2xl">
-              <UploadField label="Hero Background Video" currentUrl={settings.hero_video_url ?? ""} folder="hero" accept="video/*" onUploaded={(url) => setSettings({ ...settings, hero_video_url: url })} />
-              <UploadField label="Hero Poster Image" currentUrl={settings.hero_poster_url ?? ""} folder="hero" accept="image/*" onUploaded={(url) => setSettings({ ...settings, hero_poster_url: url })} />
+              <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+                <strong>Hero Video & Course Video:</strong> Upload these large files directly in your Supabase Storage dashboard (bucket: <code>site-assets</code>), then paste the public URL below. Vercel cannot handle large video uploads.
+              </div>
+              <Field label="Hero Background Video URL" value={settings.hero_video_url ?? ""} onChange={(v) => setSettings({ ...settings, hero_video_url: v })} />
+              <UploadField label="Hero Poster / Thumbnail Image" currentUrl={settings.hero_poster_url ?? ""} folder="hero" accept="image/*" onUploaded={(url) => setSettings({ ...settings, hero_poster_url: url })} />
               <UploadField label="Mentor Photo" currentUrl={settings.mentor_image_url ?? ""} folder="mentor" accept="image/*" onUploaded={(url) => setSettings({ ...settings, mentor_image_url: url })} />
-              <UploadField label="Course Detail Video" currentUrl={settings.course_video_url ?? ""} folder="course" accept="video/*" onUploaded={(url) => setSettings({ ...settings, course_video_url: url })} />
+              <Field label="Course Detail Video URL" value={settings.course_video_url ?? ""} onChange={(v) => setSettings({ ...settings, course_video_url: v })} />
               <UploadField label="Course Video Thumbnail" currentUrl={settings.course_thumb_url ?? ""} folder="course" accept="image/*" onUploaded={(url) => setSettings({ ...settings, course_thumb_url: url })} />
               <button className="admin-btn admin-btn-primary" onClick={saveSettings}>
                 <Save size={14} /> Save Media URLs

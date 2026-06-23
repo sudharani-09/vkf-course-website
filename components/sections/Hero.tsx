@@ -34,6 +34,7 @@ export default function Hero() {
           loop
           playsInline
           preload="auto"
+          poster={settings.hero_poster_url || undefined}
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src={settings.hero_video_url} type="video/mp4" />

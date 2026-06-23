@@ -20,7 +20,16 @@ export function getSupabase() {
   if (!key) {
     throw new Error("Supabase is not configured. Add SUPABASE_SERVICE_ROLE_KEY to .env.local");
   }
-  if (!supabase) supabase = createClient(url, key);
+  if (!supabase) {
+    supabase = createClient(url, key, {
+      global: {
+        // Bypass Next.js fetch cache so every Supabase query hits the DB fresh.
+        // Without this, Next.js App Router caches PostgREST responses and admin
+        // changes don't appear on the website until a redeploy.
+        fetch: (input, init) => fetch(input, { ...init, cache: "no-store" }),
+      },
+    });
+  }
   return supabase;
 }
 

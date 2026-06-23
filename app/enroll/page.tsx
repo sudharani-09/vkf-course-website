@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { buildEnrollmentMessage, buildWhatsAppUrlFromCms } from "@/lib/whatsapp";
-import { DEFAULT_PRICING, type PricingPlan } from "@/lib/cms";
+import { DEFAULT_PRICING, DEFAULT_SETTINGS, type PricingPlan } from "@/lib/cms";
 
 const EXPERIENCE = ["Complete Beginner", "Some Basic Editing", "Intermediate Editor", "Professional Videographer"];
 
@@ -15,7 +15,7 @@ function EnrollForm() {
   const planParam = params.get("plan") || "";
 
   const [plans, setPlans] = useState<PricingPlan[]>(DEFAULT_PRICING);
-  const [whatsappNumber, setWhatsappNumber] = useState("919623252626");
+  const [whatsappNumber, setWhatsappNumber] = useState(DEFAULT_SETTINGS.whatsapp_number);
 
   useEffect(() => {
     fetch("/api/cms")

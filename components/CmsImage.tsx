@@ -26,6 +26,7 @@ export default function CmsImage({ src, alt, fill, className, style, width, heig
         height={typeof height === "number" ? height : undefined}
         className={className}
         style={style}
+        sizes={typeof sizes === "string" ? sizes : undefined}
         loading={loading === "eager" ? "eager" : "lazy"}
       />
     );

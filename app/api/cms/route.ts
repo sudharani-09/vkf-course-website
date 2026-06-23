@@ -3,5 +3,7 @@ import { getCmsData } from "@/lib/cms";
 
 export async function GET() {
   const data = await getCmsData();
-  return NextResponse.json(data);
+  return NextResponse.json(data, {
+    headers: { "Cache-Control": "no-store" },
+  });
 }
